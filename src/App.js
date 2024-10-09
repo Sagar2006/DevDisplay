@@ -3,6 +3,7 @@ import Homepage from './Homepage';
 import Opportunities from './Page/Opportunities.jsx';
 
 function App() {
+  console.log('App component rendered');
   return (
     <BrowserRouter>
       <Routes>
@@ -13,3 +14,15 @@ function App() {
   );
 }
 export default App;
+// import React from 'react';
+
+// function App() {
+//   console.log('App component rendered');
+//   return (
+//     <div className="App">
+//       <h1 className="text-3xl font-bold text-red-500">Hello, World!</h1>
+//     </div>
+//   );
+// }
+
+// export default App;

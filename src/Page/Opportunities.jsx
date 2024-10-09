@@ -56,7 +56,6 @@ export default function Opportunities() {
           </p>
         </div>
       </section>
-
       <main className="container mx-auto grid gap-8 p-4 md:grid-cols-2 lg:grid-cols-3">
         {opportunities.map((category) => (
           <div key={category.title} className="rounded-lg bg-[#1e2a42] p-4 shadow-lg">

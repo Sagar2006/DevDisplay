@@ -6,10 +6,12 @@ import Sidebar from './components/Sidebar/Sidebar';
 import ErrorPage from './components/ErrorPage/ErrorPage';
 import NoResultFound from './components/NoResultFound/NoResultFound';
 import Pagination from './components/Pagination/Pagination';
+import SkillMatcher from './components/SkillMatcher';
 import './App.css';
 import filenames from './ProfilesList.json';
 
 function App() {
+  console.log('Homepage component rendered');
   const profilesRef = useRef();
   const [profiles, setProfiles] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -18,6 +20,7 @@ function App() {
   const [shuffledProfiles, setShuffledProfiles] = useState([]);
   const [loadingProfiles, setLoadingProfiles] = useState(false);
   const recordsPerPage = 20;
+  const [matchedProfiles, setMatchedProfiles] = useState([]);
 
   const currentUrl = window.location.pathname;
   useEffect(() => {
@@ -104,8 +107,14 @@ function App() {
     });
   }, [currentPage]);
 
+  const handleSkillMatch = (results) => {
+    setMatchedProfiles(results);
+    setSearching(true);
+    setCurrentPage(1);
+  };
+
   const getPaginatedData = () => {
-    const data = searching ? profiles : shuffledProfiles;
+    const data = searching ? (matchedProfiles.length > 0 ? matchedProfiles : profiles) : shuffledProfiles;
     const startIndex = (currentPage - 1) * recordsPerPage;
     const endIndex = startIndex + recordsPerPage;
     return data.slice(startIndex, endIndex);
@@ -132,11 +141,22 @@ function App() {
       <Sidebar />
       <div className="w-full pl-5 pr-4 md:h-screen md:w-[77%] md:overflow-y-scroll md:py-7" ref={profilesRef}>
         <Search onSearch={handleSearch} />
-        {profiles.length === 0 && searching ? <NoResultFound /> : renderProfiles()}
+        <SkillMatcher profiles={combinedData} onMatchResults={handleSkillMatch} />
+        {(matchedProfiles.length === 0 && searching) || (profiles.length === 0 && searching) ? (
+          <NoResultFound />
+        ) : (
+          renderProfiles()
+        )}
         {combinedData.length > 0 && (
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil((searching ? profiles.length : shuffledProfiles.length) / recordsPerPage)}
+            totalPages={Math.ceil(
+              (searching
+                ? matchedProfiles.length > 0
+                  ? matchedProfiles.length
+                  : profiles.length
+                : shuffledProfiles.length) / recordsPerPage,
+            )}
             onNextPage={handleNextPage}
             onPrevPage={handlePrevPage}
           />

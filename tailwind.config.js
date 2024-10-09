@@ -4,7 +4,7 @@ module.exports = {
   variants: {
     dark: ['media: (prefers-color-scheme: dark)'],
   },
-  content: ['./src/**/*.{html,js,jsx}'],
+  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
   theme: {
     extend: {
       fontFamily: {
@@ -12,7 +12,7 @@ module.exports = {
         poppoins: ['Poppins'],
       },
       animation: {
-        ['loop-scroll']: 'loop-scroll 50s linear infinite',
+        'loop-scroll': 'loop-scroll 50s linear infinite',
       },
       keyframes: {
         'loop-scroll': {
